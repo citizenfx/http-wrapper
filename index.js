@@ -104,7 +104,7 @@ class ServerResponse extends Writable {
     }
 
     getHeader(name) {
-        return this.headers[name];
+        return this.headers[name.toLowerCase()];
     }
 
     getHeaderNames() {
@@ -117,15 +117,15 @@ class ServerResponse extends Writable {
     }
 
     hasHeader(name) {
-        return (this.headers[name] !== undefined);
+        return (this.headers[name.toLowerCase()] !== undefined);
     }
 
     removeHeader(name) {
-        delete this.headers[name];
+        delete this.headers[name.toLowerCase()];
     }
 
     setHeader(name, value) {
-        this.headers[name] = value;
+        this.headers[name.toLowerCase()] = value;
     }
 
     setTimeout(ms, cb) {
