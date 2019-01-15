@@ -30,10 +30,14 @@ class IncomingMessage extends Readable {
         this.aborted = false;
 
         cfxReq.setDataHandler((data) => {
-            // TODO: implement buffer support for binary data
-            this.push(data, 'utf8');
+            if (data instanceof ArrayBuffer || ArrayBuffer.isView(data)) {
+                this.push(new Buffer(data));
+            } else {
+                this.push(data, 'utf8');
+            }
+
             this.push(null);
-        });
+        }, 'binary');
     }
 
     _read(len) {
