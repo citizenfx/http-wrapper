@@ -31,7 +31,7 @@ class IncomingMessage extends Readable {
 
         cfxReq.setDataHandler((data) => {
             if (data instanceof ArrayBuffer || ArrayBuffer.isView(data)) {
-                this.push(new Buffer(data));
+                this.push(Buffer.from(data));
             } else {
                 this.push(data, 'utf8');
             }
