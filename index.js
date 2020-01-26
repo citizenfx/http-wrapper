@@ -1,4 +1,3 @@
-const flatMap = require('array.prototype.flatmap');
 const { Readable, Writable } = require('stream');
 const http = require('http');
 
@@ -13,7 +12,7 @@ class IncomingMessage extends Readable {
         this.httpVersionMajor = 1;
         this.httpVersionMinor = 1;
         this.method = cfxReq.method;
-        this.rawHeaders = flatMap(Object.entries(this.headers), (x) => x);
+        this.rawHeaders = Object.entries(this.headers).flatMap((x) => x);
         this.rawTrailers = [];
         this.setTimeout = (ms, cb) => {
             global.setTimeout(cb, ms);
