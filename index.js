@@ -18,15 +18,28 @@ class IncomingMessage extends Readable {
             global.setTimeout(cb, ms);
             return this;
         }
-        this.connection = {
-            remoteAddress: cfxReq.address,
-            remotePort: 0
-        };
-        this.socket = this.connection;
         this.trailers = {};
         this.url = cfxReq.path;
-
         this.aborted = false;
+
+        //Setting Remote Address
+        try {
+            let addrParts = cfxReq.address.split(':');
+            if(addrParts.length != 2 || !addrParts[0].length || !addrParts[1].length){
+                throw new Error('Invalid IP:PORT');
+            }
+            this.connection = {
+                remoteAddress: addrParts[0],
+                remotePort: addrParts[1]
+            };
+        } catch (error) {
+            console.error(`requestHandler parsing ip:port error: ${error.message}`);
+            this.connection = {
+                remoteAddress: '0.0.0.0',
+                remotePort: 0
+            };
+        }
+        this.socket = this.connection;
 
         cfxReq.setDataHandler((data) => {
             if (data instanceof ArrayBuffer || ArrayBuffer.isView(data)) {
